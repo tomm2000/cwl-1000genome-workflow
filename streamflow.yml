@@ -1,0 +1,20 @@
+version: v1.0
+
+workflows:
+  genome:
+    type: cwl
+    config:
+      file: main.cwl
+      settings: config.yml
+    bindings:
+      - step: /
+        target:
+          deployment: docker-deployment
+
+deployments:
+  docker-deployment:
+    type: docker
+    config:
+      image: cwl-1000genome-workflow:latest
+      volume:
+        - /home/tommo/Desktop/Coding/ALPHA/cwl-1000genome-workflow/tmp:/tmp
