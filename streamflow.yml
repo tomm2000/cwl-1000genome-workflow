@@ -17,4 +17,4 @@ deployments:
     config:
       image: cwl-1000genome-workflow:latest
       volume:
-        - /home/tommo/Desktop/Coding/ALPHA/cwl-1000genome-workflow/tmp:/tmp
+        - /PATH/TO/TMPDIR:/tmp

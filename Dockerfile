@@ -29,14 +29,5 @@ RUN chmod +x /scripts/*
 # Add scripts directory to PATH
 ENV PATH="/scripts:${PATH}"
 
-# ----------- copy the data folder
-# COPY data/ /data/
-
-# ----------- Copy and execute data download script
-RUN mkdir -p /data
-COPY download_data.sh /app/download_data.sh
-RUN chmod +x /app/download_data.sh && \
-    /app/download_data.sh
-
 # Set default command
 CMD ["/bin/sh"]
