@@ -40,21 +40,28 @@ int main(int argc, char *argv[]) {
     // Begin processing chromosome
     std::cout << "Processing chromosome " << chr << std::endl;
 
-    // Read file chunk
-    std::ifstream in_stream(in_path);
-    if (!in_stream) {
-        std::cerr << "Error reading file " << in_path << std::endl;
+    // Read file chunk (decompress on-the-fly via zcat)
+    std::string zcat_cmd = "zcat " + in_path.string();
+    FILE *pipe = popen(zcat_cmd.c_str(), "r");
+    if (!pipe) {
+        std::cerr << "Error opening pipe for: " << zcat_cmd << std::endl;
         exit(EXIT_FAILURE);
     }
     std::vector<std::string> raw_data;
-    for (int i = 0; i < ending; i++) {
-        std::string line;
-        std::getline(in_stream, line);
-        if (i >= (counter - 1)) {
-            raw_data.push_back(line);
+    {
+        char *lineptr = nullptr;
+        size_t len = 0;
+        for (int i = 0; i < ending; i++) {
+            if (getline(&lineptr, &len, pipe) == -1) break;
+            std::string line(lineptr);
+            if (!line.empty() && line.back() == '\n') line.pop_back();
+            if (i >= (counter - 1)) {
+                raw_data.push_back(std::move(line));
+            }
         }
+        free(lineptr);
     }
-    in_stream.close();
+    pclose(pipe);
 
     // Discard comments
     std::cout << "Total number of raw_data: " << total << std::endl;

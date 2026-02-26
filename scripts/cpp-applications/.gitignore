@@ -1,0 +1,13 @@
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Compiled binaries
+download
+frequency
+individuals
+individuals_merge
+mutation_overlap
+sifting

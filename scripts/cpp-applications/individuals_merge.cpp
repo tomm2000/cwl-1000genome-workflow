@@ -31,7 +31,9 @@ int main(int argc, char *argv[]) {
         std::string tmp (argv[i]);
         std::cout << "res:" <<  (cmd + tmp).c_str() << std::endl;
         system((cmd + tmp).c_str());
-        folders[i - 2] = substr(argv[i], 0, tmp.length() - postfix.length());
+        // tar extracts into cwd, so use only the filename (not the full path)
+        std::string filename = std::filesystem::path(argv[i]).filename().string();
+        folders[i - 2] = filename.substr(0, filename.length() - postfix.length());
     }
 
     // Create merged directory

@@ -1,0 +1,21 @@
+version: v1.0
+workflows:
+  master:
+    type: cwl
+    config: 
+      file: main.cwl
+      settings: config.yml
+    bindings:
+      - step: /
+        target:
+          deployment: hpc4ai
+          service: broadwell
+      
+deployments:
+  hpc4ai:
+    type: slurm
+    workdir: /beegfs/home/tommaso.fogliobonda/tmp/streamflow
+    config:
+      services:
+        broadwell:
+          partition: broadwell
